@@ -5,6 +5,7 @@
   "description": "Documentation Website For react-native-vault",
   "author": "Matthew Perlman",
   "license": "MIT",
+  "homepage": "https://mattperls-code.github.io/react-native-vault/",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build"
