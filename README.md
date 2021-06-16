@@ -1,4 +1,4 @@
-# **react-native-vault** &nbsp; v1.0.032
+# **react-native-vault** &nbsp; v1.0.033
 
 A Persistent, Secure, And Local Database For React-Native
 

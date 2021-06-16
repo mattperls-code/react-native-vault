@@ -1,7 +1,7 @@
 {
   "name": "react-native-vault",
   "private": false,
-  "version": "1.0.032",
+  "version": "1.0.033",
   "description": "A Persistent, Secure, And Local Database For React-Native",
   "main": "index.js",
   "author": "Matthew Perlman",

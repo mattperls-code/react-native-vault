@@ -1,3 +1,5 @@
+const exampleFileContent = `// App.js
+
 import React, { useRef } from "react"
 import { StatusBar, SafeAreaView, ScrollView, View, TouchableOpacity, Text, StyleSheet, Animated } from "react-native"
 
@@ -152,4 +154,6 @@ const styles = StyleSheet.create({
   }
 })
 
-export default App
+export default App`
+
+export default exampleFileContent
