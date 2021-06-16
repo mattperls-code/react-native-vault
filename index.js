@@ -1,7 +1,7 @@
 /*
     © 2021 Matthew Perlman
 
-    react-native-vault v1.0.02
+    react-native-vault v1.0.03
 */
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -240,7 +240,7 @@ class Vault {
             this.encryptionKey = ""
         }
         this.options = {}
-        if(typeof options == "object" && !Array.isArray(options) && option !== null){
+        if(typeof options == "object" && !Array.isArray(options) && options !== null){
             if(options.hasOwnProperty("onGetStorageError")){
                 if(typeof options.onGetStorageError == "function"){
                     this.options.onGetStorageError = options.onGetStorageError

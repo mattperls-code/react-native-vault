@@ -1,7 +1,7 @@
 {
   "name": "react-native-vault",
   "private": false,
-  "version": "1.0.02",
+  "version": "1.0.03",
   "description": "A Persistent, Secure, And Local Database For React-Native",
   "main": "index.js",
   "author": "Matthew Perlman",
@@ -10,5 +10,11 @@
     "@react-native-async-storage/async-storage": "^1.15.5",
     "react-native-crypto-js": "^1.0.0",
     "react-native-uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.1"
+  },
+  "scripts": {
+    "deploy": "gh-pages -d website/build"
   }
 }

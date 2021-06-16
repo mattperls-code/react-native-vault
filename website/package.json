@@ -1,0 +1,32 @@
+{
+  "name": "react-native-vault-docs",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Documentation Website For react-native-vault",
+  "author": "Matthew Perlman",
+  "license": "MIT",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  },
+  "dependencies": {
+    "node-sass": "^6.0.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
+    "react-syntax-highlighter": "^15.4.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
