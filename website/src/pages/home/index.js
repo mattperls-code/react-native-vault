@@ -21,6 +21,7 @@ const Home = () => {
                 </div>
                 <div className={"description"}>A Persistent, Secure, And Local Database For React-Native</div>
                 <Link to={"getting-started"}>In Depth Documentation Here</Link>
+                <a href={"https://github.com/mattperls-code/react-native-vault/blob/master/example/App.js"}>Usage Example Here</a>
             </section>
             <section>
                 <h2>Simple Usage (Installation)</h2>

@@ -1,7 +1,7 @@
 /*
     © 2021 Matthew Perlman
 
-    react-native-vault v1.0.031
+    react-native-vault v1.0.032
 */
 
 import AsyncStorage from "@react-native-async-storage/async-storage"

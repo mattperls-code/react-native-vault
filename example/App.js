@@ -112,7 +112,7 @@ const App = () => {
 const styles = StyleSheet.create({
   bg: {
     flex: 1,
-    backgroundColor: "rgb(10, 20, 50)"
+    backgroundColor: "rgb(5, 15, 10)"
   },
   container: {
     alignItems: "center"
@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 0.5,
     borderColor: "rgb(120, 250, 200)",
-    backgroundColor: "rgb(40, 90, 110)",
+    backgroundColor: "rgb(55, 125, 100)",
     marginBottom: 20,
     alignItems: "center",
     justifyContent: "center"
