@@ -1,6 +1,6 @@
 import React from "react"
 
-import "./globals.scss"
+import "./styles.scss"
 
 import { HashRouter, Switch, Route } from "react-router-dom"
 

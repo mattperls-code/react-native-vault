@@ -35,6 +35,11 @@ const App = () => {
       }}>
         <Animated.Text style={[styles.header, { transform: [ { scale: headerScale} ] }]}>react-native-vault</Animated.Text>
 
+        {
+          // USAGE EXAMPLE BELOW
+          // I recommend actually running this with react native
+        }
+
         <Text style={styles.subheader}>Vault Methods</Text>
         <Button label={"Reset Vault"} onPress={() => {
           myVault.reset().then(() => { console.log("Reset Vault") })
@@ -50,6 +55,17 @@ const App = () => {
             { password: "123abc", info: "For Account A" },
             { password: "password123", info: "For Account B" }
           ]).then(() => { console.log("Set Collection") })
+        }} />
+
+        <Text style={styles.subheader}>Deposit Methods</Text>
+        <Button label={"Get Deposit (Data)"} onPress={() => {
+          myVault.getDepositData("username").then(data => { console.log(data) })
+        }} />
+        <Button label={"Set Deposit"} onPress={() => {
+          myVault.setDeposit("username", "John Doe").then(() => { console.log("Set Deposit") })
+        }} />
+        <Button label={"Remove Deposit"} onPress={() => {
+          myVault.removeDeposit("username").then(() => { console.log("Removed Deposit") })
         }} />
 
         <Text style={styles.subheader}>Collection Methods (Singular)</Text>

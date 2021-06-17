@@ -1,12 +1,48 @@
 /*
     © 2021 Matthew Perlman
 
-    react-native-vault v1.0.033
+    react-native-vault v1.0.04
 */
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import CryptoJS from "react-native-crypto-js"
 import uuid from "react-native-uuid"
+
+class Deposit {
+    constructor(vault, exists, id, data){
+        this.vault = vault
+        this.exists = exists
+        this.id = id
+        this.data = data
+    }
+    set(value){
+        return new Promise(resolve => {
+            this.exists = true
+            this.data = value
+            this.vault.setDeposit(this.id, value).then(() => {
+                resolve(null)
+            })
+        })
+    }
+    remove(){
+        return new Promise(resolve => {
+            this.exists = false
+            this.data = null
+            this.vault.removeDeposit(this.id).then(() => {
+                resolve(null)
+            })
+        })
+    }
+    syncData(){
+        return new Promise(resolve => {
+            this.vault.getDepositData(this.id).then(({ exists, data }) => {
+                this.exists = exists
+                this.data = data
+                resolve(null)
+            })
+        })
+    }
+}
 
 class Collection {
     constructor(vault, id, data){
@@ -61,7 +97,7 @@ class Collection {
         })
     }
     setOneByUuid(uuid, value){
-        return this.setOne(({ _uuid }) => _uuid == uuid, value)
+        return this.setOne(({ _uuid }) => _uuid === uuid, value)
     }
     updateOne(test, value){
         return this.findOneAndCallback(test, (index, resolve) => {
@@ -73,7 +109,7 @@ class Collection {
         })
     }
     updateOneByUuid(uuid, value){
-        return this.updateOne(({ _uuid }) => _uuid == uuid, value)
+        return this.updateOne(({ _uuid }) => _uuid === uuid, value)
     }
     removeOne(test){
         return this.findOneAndCallback(test, (index, resolve) => {
@@ -85,7 +121,7 @@ class Collection {
         })
     }
     removeOneByUuid(uuid){
-        return this.removeOne(({ _uuid }) => _uuid == uuid)
+        return this.removeOne(({ _uuid }) => _uuid === uuid)
     }
     findOne(test){
         return this.findOneAndCallback(test, (index, resolve) => {
@@ -93,7 +129,7 @@ class Collection {
         })
     }
     findOneByUuid(uuid){
-        return this.findOne(({ _uuid }) => _uuid == uuid)
+        return this.findOne(({ _uuid }) => _uuid === uuid)
     }
     addMultiple(values){
         return this.set([...this.data, ...values])
@@ -228,10 +264,14 @@ class Collection {
 class Vault {
     constructor(storageKey, encryptionKey, options){
         if(typeof storageKey == "string"){
-            this.storageKey = storageKey
+            if(storageKey != ""){
+                this.storageKey = storageKey
+            } else {
+                console.warn(`Argument "storageKey" must be a non-empty string. Received an empty string. Defaulted to "vault"`)
+            }
         } else {
-            console.warn(`Argument "storageKey" must be a string. Received "${typeof storageKey}" instead. Defaulted to "$VAULT"`)
-            this.storageKey = "$VAULT"
+            console.warn(`Argument "storageKey" must be a non-empty string. Received "${typeof storageKey}" instead. Defaulted to "vault"`)
+            this.storageKey = "vault"
         }
         if(typeof encryptionKey == "string"){
             this.encryptionKey = encryptionKey
@@ -298,12 +338,20 @@ class Vault {
                         this.options.onGetStorageError(error)
                         resolve(null)
                     } else if(result == null) {
-                        let updatedVault = {}
+                        let updatedVault = {
+                            deposits: {},
+                            collections: {}
+                        }
                         collectionIds.forEach((collectionId, index) => {
                             if(typeof collectionId == "string"){
-                                updatedVault[collectionId] = []
+                                if(collectionId != ""){
+                                    updatedVault.collections[collectionId] = []
+                                } else {
+                                    console.warn(`Argument "collectionIds" must be an array of non-empty strings. Received an empty string at index ${index}`)
+                                    reject(null)
+                                }
                             } else {
-                                console.warn(`Argument collectionIds can only contain strings. Received "${typeof collectionId}" at index ${index}`)
+                                console.warn(`Argument "collectionIds" must be an array of non-empty strings. Received "${typeof collectionId}" at index ${index}`)
                                 reject(null)
                             }
                         })
@@ -317,9 +365,19 @@ class Vault {
                         try {
                             const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
                             let updatedVault = {...decrypted}
-                            collectionIds.forEach(collectionId => {
-                                if(!decrypted.hasOwnProperty(collectionId)){
-                                    updatedVault[collectionId] = []
+                            collectionIds.forEach((collectionId, index) => {
+                                if(typeof collectionId == "string"){
+                                    if(collectionId != ""){
+                                        if(!decrypted.collections.hasOwnProperty(collectionId)){
+                                            updatedVault.collections[collectionId] = []
+                                        }
+                                    } else {
+                                        console.warn(`Argument "collectionIds" must be an array of non-empty strings. Received an empty string at index ${index}`)
+                                        reject(null)
+                                    }
+                                } else {
+                                    console.warn(`Argument "collectionIds" must be an array of non-empty strings. Received "${typeof collectionId}" at index ${index}`)
+                                    reject(null)
                                 }
                             })
                             AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify(updatedVault), this.encryptionKey).toString(), (err) => {
@@ -335,18 +393,150 @@ class Vault {
                     }
                 })
             } else {
-                console.warn(`Argument "collectionIds" must be a string. Received "${typeof collectionIds}" instead`)
+                console.warn(`Argument "collectionIds" must be an array of non-empty strings. Received "${typeof collectionIds}" instead`)
                 reject(null)
             }
         })
     }
     reset(){
         return new Promise(resolve => {
-            AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify({}), this.encryptionKey).toString(), (error) => {
+            AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify({ deposits: {}, collections: {} }), this.encryptionKey).toString(), (error) => {
                 if(error){
                     this.options.onSetStorageError(error)
                 }
                 resolve(null)
+            })
+        })
+    }
+    getDeposit(depositId){
+        return new Promise((resolve, reject) => {
+            AsyncStorage.getItem(this.storageKey, (error, result) => {
+                if(error){
+                    this.options.onGetStorageError(error)
+                    resolve(null)
+                } else {
+                    try {
+                        const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
+                        if(typeof depositId == "string"){
+                            if(depositId != ""){
+                                if(decrypted.deposits.hasOwnProperty(depositId)){
+                                    resolve(new Deposit(this, true, depositId, decrypted.deposits[depositId]))
+                                } else {
+                                    resolve(new Deposit(this, false, depositId, null))
+                                }
+                            } else {
+                                console.warn(`Argument "depositId" must be a non-empty string. Received an empty string`)
+                                reject(null)
+                            }
+                        } else {
+                            console.warn(`Argument "depositId" must be a non-empty string. Received "${typeof depositId}" instead`)
+                            reject(null)
+                        }
+                    } catch (err) {
+                        this.options.onDecryptionFail(err)
+                        resolve(null)
+                    }
+                }
+            })
+        })
+    }
+    getDepositData(depositId){
+        return new Promise((resolve, reject) => {
+            AsyncStorage.getItem(this.storageKey, (error, result) => {
+                if(error){
+                    this.options.onGetStorageError(error)
+                    resolve(null)
+                } else {
+                    try {
+                        const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
+                        if(typeof depositId == "string"){
+                            if(depositId != ""){
+                                if(decrypted.deposits.hasOwnProperty(depositId)){
+                                    resolve({ exists: true, data: decrypted.deposits[depositId] })
+                                } else {
+                                    resolve({ exists: false, data: null })
+                                }
+                            } else {
+                                console.warn(`Argument "depositId" must be a non-empty string. Received an empty string`)
+                                reject(null)
+                            }
+                        } else {
+                            console.warn(`Argument "depositId" must be a non-empty string. Received "${typeof depositId}" instead`)
+                            reject(null)
+                        }
+                    } catch (err) {
+                        this.options.onDecryptionFail(err)
+                        resolve(null)
+                    }
+                }
+            })
+        })
+    }
+    setDeposit(depositId, value){
+        return new Promise((resolve, reject) => {
+            AsyncStorage.getItem(this.storageKey, (error, result) => {
+                if(error){
+                    this.options.onGetStorageError(error)
+                    resolve(null)
+                } else {
+                    try {
+                        const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
+                        if(typeof depositId == "string"){
+                            if(depositId != ""){
+                                let updatedVault = {...decrypted}
+                                updatedVault.deposits[depositId] = value
+                                AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify(updatedVault), this.encryptionKey).toString(), (err) => {
+                                    if(err){
+                                        this.options.onSetStorageError(err)
+                                    }
+                                    resolve(null)
+                                })
+                            } else {
+                                console.warn(`Argument "depositId" must be a non-empty string. Received an empty string`)
+                            }
+                        } else {
+                            console.warn(`Argument "depositId" must be a non-empty string. Received "${typeof depositId}" instead`)
+                            reject(null)
+                        }
+                    } catch (err) {
+                        this.options.onDecryptionFail(err)
+                        resolve(null)
+                    }
+                }
+            })
+        })
+    }
+    removeDeposit(depositId){
+        return new Promise((resolve, reject) => {
+            AsyncStorage.getItem(this.storageKey, (error, result) => {
+                if(error){
+                    this.options.onGetStorageError(error)
+                    resolve(null)
+                } else {
+                    try {
+                        const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
+                        if(typeof depositId == "string"){
+                            if(depositId != ""){
+                                let updatedVault = {...decrypted}
+                                delete updatedVault.deposits[depositId]
+                                AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify(updatedVault), this.encryptionKey).toString(), (err) => {
+                                    if(err){
+                                        this.options.onSetStorageError(err)
+                                    }
+                                    resolve(null)
+                                })
+                            } else {
+                                console.warn(`Argument "depositId" must be a non-empty string. Received an empty string`)
+                            }
+                        } else {
+                            console.warn(`Argument "depositId" must be a non-empty string. Received "${typeof depositId}" instead`)
+                            reject(null)
+                        }
+                    } catch (err) {
+                        this.options.onDecryptionFail(err)
+                        resolve(null)
+                    }
+                }
             })
         })
     }
@@ -359,10 +549,20 @@ class Vault {
                 } else {
                     try {
                         const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
-                        if(decrypted.hasOwnProperty(collectionId)){
-                            resolve(new Collection(this, collectionId, decrypted[collectionId]))
+                        if(typeof collectionId == "string"){
+                            if(collectionId != ""){
+                                if(decrypted.collections.hasOwnProperty(collectionId)){
+                                    resolve(new Collection(this, collectionId, decrypted.collections[collectionId]))
+                                } else {
+                                    console.warn(`Could not find a collection with id "${collectionId}". Make sure you have properly initialized the collection`)
+                                    reject(null)
+                                }
+                            } else {
+                                console.warn(`Argument "collectionId" must be a non-empty string. Received an empty string`)
+                                reject(null)
+                            }
                         } else {
-                            console.warn(`Could not find a collection with id "${collectionId}"`)
+                            console.warn(`Argument "collectionId" must be a non-empty string. Received "${typeof collectionId}" instead`)
                             reject(null)
                         }
                     } catch (err) {
@@ -382,10 +582,20 @@ class Vault {
                 } else {
                     try {
                         const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
-                        if(decrypted.hasOwnProperty(collectionId)){
-                            resolve(decrypted[collectionId])
+                        if(typeof collectionId == "string"){
+                            if(collectionId != ""){
+                                if(decrypted.collections.hasOwnProperty(collectionId)){
+                                    resolve(decrypted.collections[collectionId])
+                                } else {
+                                    console.warn(`Could not find a collection with id "${collectionId}". Make sure you have properly initialized the collection`)
+                                    reject(null)
+                                }
+                            } else {
+                                console.warn(`Argument "collectionId" must be a non-empty string. Received an empty string`)
+                                reject(null)
+                            }
                         } else {
-                            console.warn(`Could not find a collection with id "${collectionId}"`)
+                            console.warn(`Argument "collectionId" must be a non-empty string. Received "${typeof collectionId}" instead`)
                             reject(null)
                         }
                     } catch (err) {
@@ -405,29 +615,39 @@ class Vault {
                 } else {
                     try {
                         const decrypted = JSON.parse(CryptoJS.AES.decrypt(result, this.encryptionKey).toString(CryptoJS.enc.Utf8))
-                        let updatedVault = {...decrypted}
-                        updatedVault[collectionId] = value
-                        if(Array.isArray(value)){
-                            for(let i = 0;i<value.length;i++){
-                                if(typeof value[i] == "object" && !Array.isArray(value[i]) && value[i] !== null){
-                                    if(!value[i].hasOwnProperty("_uuid")){
-                                        updatedVault[collectionId][i]._uuid = uuid.v4()
+                        if(typeof collectionId == "string"){
+                            let updatedVault = {...decrypted}
+                            if(collectionId != ""){
+                                updatedVault.collections[collectionId] = value
+                                if(Array.isArray(value)){
+                                    for(let i = 0;i<value.length;i++){
+                                        if(typeof value[i] == "object" && !Array.isArray(value[i]) && value[i] !== null){
+                                            if(!value[i].hasOwnProperty("_uuid")){
+                                                updatedVault.collections[collectionId][i]._uuid = uuid.v4()
+                                            }
+                                        } else {
+                                            console.warn(`Collections must be an array of non-null non-array objects. Failed to set collection`)
+                                            reject(null)
+                                        }
                                     }
+                                    AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify(updatedVault), this.encryptionKey).toString(), (err) => {
+                                        if(err){
+                                            this.options.onSetStorageError(err)
+                                        }
+                                        resolve(null)
+                                    })
                                 } else {
-                                    console.warn(`Collections must be an array of non-null non-array objects. Failed to set collection`)
+                                    console.warn(`Argument "value" must be an array. Received "${typeof value}" instead`)
                                     reject(null)
                                 }
+                            } else {
+                                console.warn(`Argument "collectionId" must be a non-empty string. Received an empty string`)
+                                reject(null)
                             }
                         } else {
-                            console.warn(`Argument "value" must be an array. Received "${typeof value}" instead`)
+                            console.warn(`Argument "collectionId" must be a non-empty string. Received "${typeof collectionId}" instead`)
                             reject(null)
                         }
-                        AsyncStorage.setItem(this.storageKey, CryptoJS.AES.encrypt(JSON.stringify(updatedVault), this.encryptionKey).toString(), (err) => {
-                            if(err){
-                                this.options.onSetStorageError(err)
-                            }
-                            resolve(null)
-                        })
                     } catch (err) {
                         this.options.onDecryptionFail(err)
                         resolve(null)

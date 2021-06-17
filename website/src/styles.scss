@@ -1,0 +1,104 @@
+@import "./colors.scss";
+
+@font-face {
+    font-family: Roboto;
+    src: url("./assets/fonts/Roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: Lato;
+    src: url("./assets/fonts/Lato/Lato-Regular.ttf");
+}
+
+html {
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+
+    body {
+        margin: 0;
+        padding: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: $light;
+        overflow-y: scroll;
+
+        section {
+            width: 100%;
+            padding: 64px 0px;
+            margin-bottom: 1px;
+            background-color: $black;
+
+            h1 {
+                color: $light;
+                font-family: Lato;
+                font-size: 36px;
+                text-align: center;
+                text-shadow: 0 0 16px $light;
+                margin: 0;
+                padding: 0 20px;
+                padding-bottom: 36px;
+            }
+        
+            .logoContainer {
+                text-align: center;
+        
+                .logo {
+                    width: calc(min(200px, 50vw));
+                    height: calc(min(200px, 50vw));
+                }
+            }
+        
+            .description {
+                color: $dark;
+                font-family: Roboto;
+                font-size: 24px;
+                text-align: center;
+                text-shadow: 0 0 16px $transparent-light;
+                padding: 0 20px;
+                padding-top: 36px;
+            }
+        
+            a {
+                color: $light;
+                font-family: Roboto;
+                font-size: 18px;
+                text-decoration-color: $dark;
+                text-shadow: 0 0 36px $light;
+                display: block;
+                text-align: center;
+                padding-bottom: 36px;
+            }
+        
+            h2 {
+                color: $light;
+                font-family: Lato;
+                font-size: 24px;
+                text-align: center;
+                text-shadow: 0 0 16px $light;
+                margin: 0;
+                padding: 0 20px;
+                padding-bottom: 36px;
+            }
+        
+            .docsDescription {
+                color: $dark;
+                font-family: Roboto;
+                font-size: 24px;
+                text-align: center;
+                text-shadow: 0 0 16px $transparent-light;
+                padding: 0 20px;
+                padding-top: 36px;
+                padding-bottom: 9px;
+            }
+        }
+        
+        section:last-of-type {
+            margin-bottom: 0;
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    display: none;
+}

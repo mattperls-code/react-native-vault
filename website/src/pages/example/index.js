@@ -1,7 +1,5 @@
 import React from "react"
 
-import "./styles.scss"
-
 import { Link } from "react-router-dom"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
@@ -14,7 +12,7 @@ const Example = () => {
     SyntaxHighlighter.registerLanguage("jsx", jsx)
 
     return (
-        <div className={"bg"}>
+        <section>
             <Link to={"/"}>Back To Home</Link>
             <h1>Example Code</h1>
             <SyntaxHighlighter customStyle={{ width: "calc(min(80vw, 1000px))", margin: "auto", padding: "15px" }} language={"jsx"} style={vscDarkPlus}>
@@ -22,7 +20,7 @@ const Example = () => {
                     exampleFileContent
                 }
             </SyntaxHighlighter>
-        </div>
+        </section>
     )
 }
 
