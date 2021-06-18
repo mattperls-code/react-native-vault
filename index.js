@@ -1,7 +1,7 @@
 /*
     © 2021 Matthew Perlman
 
-    react-native-vault v1.0.04
+    react-native-vault v1.0.05
 */
 
 import AsyncStorage from "@react-native-async-storage/async-storage"
@@ -301,16 +301,6 @@ class Vault {
             } else {
                 this.options.onSetStorageError = console.warn
             }
-            if(options.hasOwnProperty("onEncryptionFail")){
-                if(typeof options.onEncryptionFail == "function"){
-                    this.options.onEncryptionFail = options.onEncryptionFail
-                } else {
-                    console.warn(`Property "onEncryptionFail" of Argument "options" must be a function. Received "${typeof options.onEncryptionFail}" instead. Defaulted to console.warn`)
-                    this.options.onEncryptionFail = console.warn
-                }
-            } else {
-                this.options.onEncryptionFail = console.warn
-            }
             if(options.hasOwnProperty("onDecryptionFail")){
                 if(typeof options.onDecryptionFail == "function"){
                     this.options.onDecryptionFail = options.onDecryptionFail
@@ -325,7 +315,6 @@ class Vault {
             this.options = {
                 onGetStorageError: console.warn,
                 onSetStorageError: console.warn,
-                onEncryptionFail: console.warn,
                 onDecryptionFail: console.warn
             }
         }

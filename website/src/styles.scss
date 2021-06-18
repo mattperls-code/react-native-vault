@@ -27,6 +27,7 @@ html {
             width: 100%;
             padding: 64px 0px;
             margin-bottom: 1px;
+            overflow-x: hidden;
             background-color: $black;
 
             h1 {
@@ -60,6 +61,7 @@ html {
             }
         
             a {
+                display: flex;
                 color: $light;
                 font-family: Roboto;
                 font-size: 18px;
@@ -90,6 +92,73 @@ html {
                 padding: 0 20px;
                 padding-top: 36px;
                 padding-bottom: 9px;
+            }
+
+            .tableContainer {
+                overflow-y: scroll;
+
+                .tableTitle {
+                    color: $light;
+                    font-family: Lato;
+                    font-size: 22px;
+                    text-align: center;
+                    margin: 48px 0;
+                    text-shadow: 0 0 16px $light;
+                }
+
+                table, th, td {
+                    border-collapse: collapse;
+                }
+    
+                table {
+                    margin: auto;
+                    background-color: $black;
+                    width: calc(min(80%, 600px));
+                }
+    
+                th {
+                    font-family: Lato;
+                    font-size: 18px;
+                    color: $light;
+                    padding: 5px;
+                }
+    
+                td {
+                    font-family: Roboto;
+                    font-size: 16px;
+                    border: 1px solid $dark;
+                    border-collapse: collapse;
+                    color: $light;
+                    padding: 5px;
+                    text-align: center;
+                }
+                
+                .tableDescription {
+                    text-align: left;
+                }
+            }
+
+            .navContainer {
+                margin: auto;
+                margin-top: 24px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 0 150px;
+            }
+
+            .button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: auto;
+                margin-top: 48px;
+                padding: 4.5px 20px;
+                width: calc(min(240px, 60vw));
+                height: 60px;
+                border: 2px solid $light;
+                border-radius: 15px;
+                box-shadow: inset 0 0 25px $dark, 0 0 45px $transparent-light;
             }
         }
         

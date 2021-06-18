@@ -18,8 +18,8 @@ const Home = () => {
                 <div className={"description"}>A Persistent, Secure, And Local Database For React-Native</div>
                 <br/>
                 <br/>
-                <Link to={"docs/getting-started"}>In Depth Documentation Here</Link>
-                <Link to={"example"}>Usage Example Here</Link>
+                <Link to={"/docs/getting-started"}>In Depth Documentation Here</Link>
+                <Link to={"/example"}>Usage Example Here</Link>
             </section>
             <section>
                 <h2>Overview</h2>
@@ -111,13 +111,13 @@ const Home = () => {
                 <div className={"docsDescription"}>Using a deposit instance</div>
                 <SyntaxHighlighter customStyle={{ width: "calc(min(80%, 600px))", margin: "auto", padding: "15px" }} language={"javascript"} style={atomOneDark}>
                     {
-                        `myVault.getDeposit("myDepositName").then(deposit => {\n\tconst data = deposit.data;\n\t// Do stuff with data here\n});`
+                        `myVault.getDeposit("myDepositName").then(deposit => {\n\tconst { exists, data } = deposit.data;\n\t// Do stuff with data here\n});`
                     }
                 </SyntaxHighlighter>
                 <div className={"docsDescription"}>Directly getting json (not recommended)</div>
                 <SyntaxHighlighter customStyle={{ width: "calc(min(80%, 600px))", margin: "auto", padding: "15px" }} language={"javascript"} style={atomOneDark}>
                     {
-                        `myVault.getDepositData("myDepositName").then(data => {\n\t// Do stuff with data here\n});`
+                        `myVault.getDepositData("myDepositName").then(depositData => {\n\tconst { exists, data } = depositData;\n\t// Do stuff with data here\n});`
                     }
                 </SyntaxHighlighter>
             </section>
