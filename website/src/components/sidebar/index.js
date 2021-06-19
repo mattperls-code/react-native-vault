@@ -44,6 +44,7 @@ const ContentWithSidebar = ({ children }) => {
                         <Link to={"/docs/updating-items-in-a-collection"}>Updating Items In A Collection</Link>
                         <Link to={"/docs/removing-items-from-a-collection"}>Removing Items From A Collection</Link>
                         <Link to={"/docs/finding-items-in-a-collection"}>Finding Items In A Collection</Link>
+                        <div style={{ height: "24px" }} />
                     </aside>
                 ) : (
                     <header>

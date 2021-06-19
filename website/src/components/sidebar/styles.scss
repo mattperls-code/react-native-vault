@@ -71,7 +71,6 @@
 
 aside {
     box-shadow: inset -4px 0 0 $dark;
-    padding-bottom: 32px;
 
     h3 {
         font-family: Roboto;
@@ -88,6 +87,7 @@ aside {
         display: block;
         font-family: Roboto;
         font-size: 24px;
+        padding-right: 14px;
         margin-top: 14px;
         margin-left: 28px;
         color: $dark;
