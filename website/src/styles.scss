@@ -47,6 +47,7 @@ html {
                 .logo {
                     width: calc(min(200px, 50vw));
                     height: calc(min(200px, 50vw));
+                    filter: drop-shadow(0 0 50px $light);
                 }
             }
         
@@ -144,7 +145,7 @@ html {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: wrap;
-                padding: 0 150px;
+                padding: 0 20px;
             }
 
             .button {
@@ -154,7 +155,7 @@ html {
                 margin: auto;
                 margin-top: 48px;
                 padding: 4.5px 20px;
-                width: calc(min(240px, 60vw));
+                width: calc(min(280px, 60vw));
                 height: 60px;
                 border: 2px solid $light;
                 border-radius: 15px;

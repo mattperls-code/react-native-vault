@@ -67,7 +67,7 @@ const Home = () => {
                 },
                 {
                     name: "Rafayel Amirkhanyan",
-                    age: 14,
+                    age: 15,
                     married: false
                 }
             ]
@@ -165,6 +165,9 @@ const Home = () => {
                         `const newData = [{ name: "Jane Doe" }, { name: "John Doe" }];\nmyVault.setCollection("myCollectionName", newData).then(() => {\n\t// Now collection "myCollectionName" is set to [{ name: "Jane Doe" }, { name: "John Doe" }]\n});`
                     }
                 </SyntaxHighlighter>
+                <Link to={"/docs/getting-started"} className={"button"}>
+                    <span>Go To Documentation</span>
+                </Link>
             </section>
         </React.Fragment>
     )

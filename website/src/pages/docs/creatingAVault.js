@@ -7,17 +7,17 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism"
 
 import { Link } from "react-router-dom"
 
-const CreateAVault = () => {
+const CreatingAVault = () => {
     return (
-        <ContentWithSidebar sidebarContent={[]}>
+        <ContentWithSidebar>
             <section>
                 <Link to={"/"}>Back To Home</Link>
-                <h1>Documentation - Create A Vault</h1>
+                <h1>Creating A Vault</h1>
                 <div className={"description"}>Vaults allow you to store persistent data</div>
                 <div className={"description"}>The data in vaults is automatically encrypted by react-native-vault</div>
             </section>
             <section>
-                <h2>Basic Usage</h2>
+                <h2>Usage</h2>
                 <div className={"docsDescription"}>Import Vault</div>
                 <SyntaxHighlighter customStyle={{ width: "calc(min(80%, 600px))", margin: "auto", padding: "15px" }} language={"javascript"} style={vscDarkPlus}>
                     {
@@ -27,13 +27,16 @@ const CreateAVault = () => {
                 <div className={"docsDescription"}>Create A Vault Instance</div>
                 <SyntaxHighlighter customStyle={{ width: "calc(min(80%, 600px))", margin: "auto", padding: "15px" }} language={"javascript"} style={vscDarkPlus}>
                     {
-                        `// Ideally this should be in a place that can be imported from.\n// This way you won't need to instantiate and initialize a new vault every usage.\n\nconst myVault = new Vault(\n\t<storageKey>,\n\t<encryptionKey>,\n\t<options>\n);`
-                    }
-                </SyntaxHighlighter>
-                <div className={"docsDescription"}>Initialize The Vault</div>
-                <SyntaxHighlighter customStyle={{ width: "calc(min(80%, 600px))", margin: "auto", padding: "15px" }} language={"javascript"} style={vscDarkPlus}>
-                    {
-                        `// You MUST do this or else the vault will not work\n// You must also initialize the vault after the reset method is called\n\nmyVault.initialize(<collectionIds>).then(() => {\n\t// You can safely use this vault now\n});`
+`// Ideally this should be in a place that can be imported from.
+// This way you won't need to instantiate and initialize a new vault every usage.
+
+const myVault = new Vault(
+    <storageKey>,
+    <encryptionKey>,
+    <options>
+);
+
+// Initialize vault here (See Initializing A Vault)`
                     }
                 </SyntaxHighlighter>
             </section>
@@ -52,13 +55,12 @@ const CreateAVault = () => {
                         <tbody>
                             <tr>
                                 <td>storageKey</td>
-                                <td>String</td>
+                                <td rowSpan={2}>String</td>
                                 <td className={"tableDescription"}>The key the vault will be stored with in async storage. Make sure that if you are using async storage elsewhere in your app that there are no name collisions.</td>
                                 <td>"vault"</td>
                             </tr>
                             <tr>
                                 <td>encryptionKey</td>
-                                <td>String</td>
                                 <td className={"tableDescription"}>The encryption key that will be used to encrypt the vault. Ideally this should be stored as a secure environment variable. Make sure it is NOT DYNAMIC, or else you will likely run into decryption issues.</td>
                                 <td>Empty String</td>
                             </tr>
@@ -66,12 +68,6 @@ const CreateAVault = () => {
                                 <td>options</td>
                                 <td>Object</td>
                                 <td colSpan={2}>See Below</td>
-                            </tr>
-                            <tr>
-                                <td>collectionIds</td>
-                                <td>Array&lt;String&gt;</td>
-                                <td className={"tableDescription"}>The ids of the collections you want so store in the vault. For example, if you wanted to store family and friends as two collections, you would set this to ["family", "friends"].</td>
-                                <td>Empty Array</td>
                             </tr>
                         </tbody>
                     </table>
@@ -115,8 +111,8 @@ const CreateAVault = () => {
                     <Link to={"/docs/getting-started"} className={"button"}>
                         <span>Last Page - Getting Started</span>
                     </Link>
-                    <Link to={"/docs/reset-a-vault"} className={"button"}>
-                        <span>Next Page - Reset A Vault</span>
+                    <Link to={"/docs/initializing-a-vault"} className={"button"}>
+                        <span>Next Page - Initializing A Vault</span>
                     </Link>
                 </div>
             </section>
@@ -124,4 +120,4 @@ const CreateAVault = () => {
     )
 }
 
-export default CreateAVault
+export default CreatingAVault

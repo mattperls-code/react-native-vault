@@ -2,12 +2,45 @@
 
 @media (max-width: 600px) {
     aside {
-        display: none;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: $light;
+        z-index: 2;
+    }
+
+    header {
+        width: 100%;
+        height: 80px;
+
+        h1 {
+            margin-left: 24px;
+            font-family: Lato;
+            font-size: 30px;
+            color: $dark;
+        }
+    }
+
+    .toggle {
+        position: absolute;
+        padding: 0 8px;
+        top: 14px;
+        right: 14px;
+        font-size: 36px;
+        color: $dark;
     }
 
     main {
+        position: absolute;
         width: 100%;
         height: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+
+    .withHeader {
+        top: 80px;
+        height: calc(100% - 80px);
     }
 }
 
@@ -18,6 +51,14 @@
         height: 100vh;
     }
 
+    header {
+        display: none;
+    }
+
+    .toggle {
+        display: none;
+    }
+
     main {
         position: absolute;
         right: 0;
@@ -26,4 +67,32 @@
         overflow-x: hidden;
         overflow-y: scroll;
     }
+}
+
+aside {
+    box-shadow: inset -4px 0 0 $dark;
+    padding-bottom: 32px;
+
+    h3 {
+        font-family: Roboto;
+        font-size: 32px;
+        margin-bottom: 32px;
+        padding: 14px 0;
+        padding-left: 14px;
+        color: $dark;
+        text-shadow: 0 0 16px $dark;
+        background-color: $black;
+    }
+
+    a {
+        display: block;
+        font-family: Roboto;
+        font-size: 24px;
+        margin-top: 14px;
+        margin-left: 28px;
+        color: $dark;
+    }
+
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
