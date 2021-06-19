@@ -1,10 +1,23 @@
 {
   "name": "react-native-vault",
   "private": false,
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A Persistent, Secure, And Local Database For React-Native",
   "main": "index.js",
-  "author": "Matthew Perlman",
+  "author": {
+    "name": "Matthew Perlman",
+    "email": "mattperls.code@gmail.com",
+    "url": "https://github.com/mattperls-code/"
+  },
+  "keywords": [
+    "react-native-vault",
+    "react-native",
+    "database",
+    "persistent",
+    "secure",
+    "local",
+    "mattperls-code"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
