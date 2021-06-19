@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/react-native-vault/static/css/main.54e21d7c.chunk.css",
-    "main.js": "/react-native-vault/static/js/main.65ddd7d5.chunk.js",
-    "main.js.map": "/react-native-vault/static/js/main.65ddd7d5.chunk.js.map",
+    "main.css": "/react-native-vault/static/css/main.ac564e80.chunk.css",
+    "main.js": "/react-native-vault/static/js/main.f3a813a4.chunk.js",
+    "main.js.map": "/react-native-vault/static/js/main.f3a813a4.chunk.js.map",
     "runtime-main.js": "/react-native-vault/static/js/runtime-main.e68fa962.js",
     "runtime-main.js.map": "/react-native-vault/static/js/runtime-main.e68fa962.js.map",
     "static/js/2.b68c70af.chunk.js": "/react-native-vault/static/js/2.b68c70af.chunk.js",
     "static/js/2.b68c70af.chunk.js.map": "/react-native-vault/static/js/2.b68c70af.chunk.js.map",
     "index.html": "/react-native-vault/index.html",
-    "static/css/main.54e21d7c.chunk.css.map": "/react-native-vault/static/css/main.54e21d7c.chunk.css.map",
+    "static/css/main.ac564e80.chunk.css.map": "/react-native-vault/static/css/main.ac564e80.chunk.css.map",
     "static/js/2.b68c70af.chunk.js.LICENSE.txt": "/react-native-vault/static/js/2.b68c70af.chunk.js.LICENSE.txt",
     "static/media/styles.scss": "/react-native-vault/static/media/Roboto-Regular.03523cf5.ttf",
     "static/media/logo.2c86b2ea.svg": "/react-native-vault/static/media/logo.2c86b2ea.svg"
@@ -16,7 +16,7 @@
   "entrypoints": [
     "static/js/runtime-main.e68fa962.js",
     "static/js/2.b68c70af.chunk.js",
-    "static/css/main.54e21d7c.chunk.css",
-    "static/js/main.65ddd7d5.chunk.js"
+    "static/css/main.ac564e80.chunk.css",
+    "static/js/main.f3a813a4.chunk.js"
   ]
 }
